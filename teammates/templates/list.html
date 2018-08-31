@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h3>Mates</h3>
+<a href="/mates/add" class="btn btn-info btn-sm">
+  <i class="glyphicon glyphicon-upload"></i>
+  Add teammate
+</a>
+
+{% for mate in mates %}
+<div class="media">
+  <a href="/mates/{{mate.id}}">
+    <div class="media-left">
+      {% if mate.avatar %}
+        <img src="{{mate.avatar}}">
+      {% else %}
+        <img src="https://www.freeiconspng.com/uploads/no-image-icon-6.png">
+      {% endif %}
+    </div>
+    <div class="media-body">
+      <h4>{{mate.name}}</h4>
+      <p>{{mate.department}}</p>
+    </div>
+  </a>
+</div>
+{% else %}
+<p>No mates found</p>
+{% endfor %}
+
+{% if next_page_token %}
+<nav>
+  <ul class="pager">
+    <li><a href="?page_token={{next_page_token}}">More</a></li>
+  </ul>
+</nav>
+{% endif %}
+
+{% endblock %}

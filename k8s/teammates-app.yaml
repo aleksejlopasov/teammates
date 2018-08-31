@@ -1,0 +1,54 @@
+# This file configures the teammates application frontend. The frontend serves
+# public web traffic.
+
+# The teammates frontend replication controller ensures that at least 3
+# instances of the teammates app are running on the cluster.
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: teammates-frontend
+spec:
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: teammates
+        tier: frontend
+    spec:
+      containers:
+      - name: teammates-app
+        # Defineyour project ID.
+        image: gcr.io/PROJECT/teammates:latest
+        # This setting makes nodes pull the docker image every time before
+        # starting the pod.
+        imagePullPolicy: Always
+        # The PROCESSES environment variable is used by Honcho in the
+        # Dockerfile's CMD to control which processes are started. In this
+        # case, only the teammates process is needed.
+        env:
+        - name: PROCESSES
+          value: teammates
+        # The teammates process listens on port 8080 for web traffic by default.
+        ports:
+        - containerPort: 8080
+
+---
+
+# The teammates service provides a load-balancing proxy over the teammates app
+# pods. By specifying the type as a 'LoadBalancer', Kubernetes Engine will
+# create an external HTTP load balancer.
+apiVersion: v1
+kind: Service
+metadata:
+  name: teammates-frontend
+  labels:
+    app: teammates
+    tier: frontend
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+    targetPort: 8080
+  selector:
+    app: teammates
+    tier: frontend

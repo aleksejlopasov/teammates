@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h3>Mate</h3>
+
+<div class="btn-group">
+  <a href="/mates/{{mate.id}}/edit" class="btn btn-primary btn-sm">
+    <i class="glyphicon glyphicon-edit"></i>
+    Edit teammate
+  </a>
+  <a href="/mates/{{mate.id}}/delete" class="btn btn-danger btn-sm">
+    <i class="glyphicon glyphicon-remove-circle"></i>
+    Delete teammate
+  </a>
+</div>
+
+<div class="media">
+  {# [START mate_image] #}
+  <div class="media-left">
+    {% if mate.avatar %}
+      <img class="mate-image" src="{{mate.avatar}}">
+    {% else %}
+      <img class="mate-image" src="https://www.freeiconspng.com/uploads/no-image-icon-6.png">
+    {% endif %}
+  </div>
+  {# [END mate_image] #}
+  <div class="media-body">
+    <h4 class="mate-name">
+      {{mate.name}}
+      <small>{{mate.birthDate}}</small>
+    </h4>
+    <h5 class="mate-department">{{mate.department|default('Unknown', True)}}</h5>
+    <p class="mate-summary">{{mate.summary}}</p>
+  </div>
+</div>
+
+{% endblock %}

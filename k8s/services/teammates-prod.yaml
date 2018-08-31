@@ -1,0 +1,17 @@
+apiVersion: "v1"
+kind: "Service"
+metadata:
+  labels:
+    app: "teammates"
+    tier: "frontend"
+  name: "teammates-prod"
+spec:
+  ports:
+  - name: "http"
+    port: 80
+    protocol: "TCP"
+    targetPort: 8080
+  selector:
+    load-balancer-teammates-prod: "true"
+  sessionAffinity: "None"
+  type: "LoadBalancer"
